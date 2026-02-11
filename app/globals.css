@@ -83,6 +83,197 @@ p {
   line-height: 1.2;
 }
 
+.hero {
+  padding: 2.5rem 2rem;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--surface) 85%, transparent), transparent);
+}
+
+.heroInner {
+  display: grid;
+  gap: 1rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  line-height: 1.1;
+}
+
+.heroSubheading {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--muted);
+  max-width: 40rem;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.ctaButton,
+.ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.ctaButton {
+  background: var(--text);
+  color: var(--surface);
+}
+
+.ctaGhost {
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.sectionHeader {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.sectionSubheading {
+  margin: 0;
+  color: var(--muted);
+}
+
+.featuredGrid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.featuredMain,
+.featuredAside {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+.featuredMain {
+  display: grid;
+  gap: 1rem;
+}
+
+.featuredAside {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.panelTitle {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.categoryList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.categoryChip {
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--tag-bg) 70%, transparent);
+  font-weight: 600;
+}
+
+.aboutSection,
+.subscribeSection {
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.textLink {
+  font-weight: 600;
+}
+
+.subscribeForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+}
+
+.subscribeForm input {
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  background: transparent;
+  color: inherit;
+}
+
+.subscribeForm button {
+  border-radius: 999px;
+  border: none;
+  background: var(--text);
+  color: var(--surface);
+  padding: 0.6rem 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.formNote {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.siteFooter {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footerCredits {
+  margin: 0;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 .metaLine {
   display: flex;
   flex-wrap: wrap;
@@ -203,5 +394,16 @@ p {
 
   .postCard > .stackCompact {
     padding: 0.85rem;
+  }
+
+  .subscribeForm {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 900px) {
+  .featuredGrid {
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 0.9fr);
+    align-items: start;
   }
 }
