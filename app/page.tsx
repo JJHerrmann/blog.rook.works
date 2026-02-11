@@ -34,7 +34,18 @@ export default function HomePage() {
   const posts = getAllPosts();
   const featuredPosts = posts.slice(0, 3);
   const latestPost = posts[0];
-  const categories = ["Systems", "Workflows", "Stories"];
+  const categoryMap = posts.reduce((acc, post) => {
+    post.tags.forEach((tag) => {
+      acc.set(tag, (acc.get(tag) ?? 0) + 1);
+    });
+    return acc;
+  }, new Map<string, number>());
+  const categories = Array.from(categoryMap, ([name, count]) => ({ name, count })).sort((a, b) => {
+    if (b.count !== a.count) {
+      return b.count - a.count;
+    }
+    return a.name.localeCompare(b.name);
+  });
 
   return (
     <section className="stack">
@@ -99,13 +110,18 @@ export default function HomePage() {
 
           <aside className="featuredAside">
             <h3 className="panelTitle">Categories</h3>
-            <ul className="categoryList">
-              {categories.map((category) => (
-                <li key={category} className="categoryChip">
-                  {category}
-                </li>
-              ))}
-            </ul>
+            {categories.length === 0 ? (
+              <p className="emptyState">No categories yet.</p>
+            ) : (
+              <ul className="categoryList">
+                {categories.map((category) => (
+                  <li key={category.name} className="categoryChip">
+                    <span>{category.name}</span>
+                    <span className="categoryCount">{category.count}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </aside>
         </div>
       </section>
