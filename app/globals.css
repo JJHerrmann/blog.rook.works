@@ -87,6 +87,17 @@ p {
   margin: 0;
   color: var(--muted);
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.authorAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid var(--border);
 }
 
 .hero {

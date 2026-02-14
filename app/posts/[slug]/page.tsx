@@ -79,7 +79,10 @@ export default async function PostPage({ params }: PostPageProps) {
       <img src={post.coverImage} alt={`Cover image for ${post.title}`} className="coverImageLarge" />
       <header className="stackCompact">
         <h1 className="pageTitle">{post.title}</h1>
-        <p className="byline">By Jacob Herrmann · {formatDate(post.date)}</p>
+        <div className="byline">
+          <img src="/images/authors/jacob-herrmann.png" alt="Jacob Herrmann" className="authorAvatar" />
+          <span>By Jacob Herrmann · {formatDate(post.date)}</span>
+        </div>
         <p className="metaLine">
           <span>{post.readingTimeMinutes} min read</span>
         </p>
