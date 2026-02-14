@@ -67,8 +67,8 @@ export default async function PostPage({ params }: PostPageProps) {
     url: `${SITE_URL}/posts/${post.slug}`,
     image: `${SITE_URL}${post.coverImage}`,
     author: {
-      "@type": "Organization",
-      name: SITE_NAME
+      "@type": "Person",
+      name: "Jacob Herrmann"
     },
     keywords: post.tags.join(", ")
   };
@@ -79,8 +79,8 @@ export default async function PostPage({ params }: PostPageProps) {
       <img src={post.coverImage} alt={`Cover image for ${post.title}`} className="coverImageLarge" />
       <header className="stackCompact">
         <h1 className="pageTitle">{post.title}</h1>
+        <p className="byline">By Jacob Herrmann · {formatDate(post.date)}</p>
         <p className="metaLine">
-          <span>{formatDate(post.date)}</span>
           <span>{post.readingTimeMinutes} min read</span>
         </p>
         <ul className="tagList">

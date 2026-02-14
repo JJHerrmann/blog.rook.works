@@ -83,6 +83,12 @@ p {
   line-height: 1.2;
 }
 
+.byline {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 600;
+}
+
 .hero {
   padding: 2.5rem 2rem;
   border-radius: 18px;
