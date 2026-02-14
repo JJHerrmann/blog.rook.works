@@ -4,7 +4,7 @@ slug: "billionaires-bracket-wrong-fight"
 date: "2026-02-07"
 description: "We tax work immediately and wealth conditionally. The problem is not the bracket. It is the timing."
 tags: ["tax policy","wealth","systems"]
-coverImage: "/images/covers/billionaires-tax-doc.png"
+coverImage: "/images/covers/billionaires_should_be_taxed.png"
 ---
 
 
