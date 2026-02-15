@@ -1,8 +1,32 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { formatDate } from "@/lib/date";
-import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
+import { AUTHOR, SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
 import { getAllPosts } from "@/lib/posts";
+
+type HomePageProps = {
+  searchParams?: {
+    [key: string]: string | string[] | undefined;
+  };
+};
+
+function normalizeParam(value: string | string[] | undefined): string {
+  if (Array.isArray(value)) {
+    return value[0] ?? "";
+  }
+  return value ?? "";
+}
+
+function buildQuery(params: Record<string, string | undefined>): string {
+  const search = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value && value.trim().length > 0) {
+      search.set(key, value);
+    }
+  });
+  const query = search.toString();
+  return query ? `?${query}` : "";
+}
 
 export function generateMetadata(): Metadata {
   const posts = getAllPosts();
@@ -30,9 +54,26 @@ export function generateMetadata(): Metadata {
   };
 }
 
-export default function HomePage() {
+export default function HomePage({ searchParams }: HomePageProps) {
   const posts = getAllPosts();
-  const featuredPosts = posts.slice(0, 3);
+  const searchQuery = normalizeParam(searchParams?.q).trim();
+  const activeTag = normalizeParam(searchParams?.tag).trim();
+  const activeTagLower = activeTag.toLowerCase();
+  const searchLower = searchQuery.toLowerCase();
+
+  const filteredPosts = posts.filter((post) => {
+    const matchesTag = !activeTag || post.tags.some((tag) => tag.toLowerCase() === activeTagLower);
+    if (!matchesTag) {
+      return false;
+    }
+    if (!searchLower) {
+      return true;
+    }
+    const haystack = [post.title, post.description, ...post.tags].join(" ").toLowerCase();
+    return haystack.includes(searchLower);
+  });
+
+  const feedPosts = searchQuery || activeTag ? filteredPosts : posts;
   const latestPost = posts[0];
   const categoryMap = posts.reduce((acc, post) => {
     post.tags.forEach((tag) => {
@@ -46,13 +87,15 @@ export default function HomePage() {
     }
     return a.name.localeCompare(b.name);
   });
+  const hasFilters = Boolean(searchQuery || activeTag);
+  const featuredPosts = hasFilters ? feedPosts : feedPosts.slice(0, 6);
 
   return (
     <section className="stack">
       <section className="hero">
         <div className="heroInner">
-          <p className="eyebrow">The Rook’s Work Desk</p>
-          <h1 className="heroTitle">The Rook’s Work Desk</h1>
+          <p className="eyebrow">The Rook's Work Desk</p>
+          <h1 className="heroTitle">The Rook's Work Desk</h1>
           <p className="heroSubheading">Tools, writing, workflows, and ideas from the edge of craft.</p>
           <div className="heroActions">
             <Link className="ctaButton" href={latestPost ? `/posts/${latestPost.slug}` : "/"}>
@@ -62,6 +105,14 @@ export default function HomePage() {
               Subscribe
             </Link>
           </div>
+          <form className="searchForm" role="search" method="get">
+            <label className="srOnly" htmlFor="search">
+              Search posts
+            </label>
+            <input id="search" name="q" type="search" placeholder="Search posts" defaultValue={searchQuery} />
+            {activeTag ? <input type="hidden" name="tag" value={activeTag} /> : null}
+            <button type="submit">Search</button>
+          </form>
         </div>
       </section>
 
@@ -74,6 +125,17 @@ export default function HomePage() {
         <div className="featuredGrid">
           <div className="featuredMain">
             <h3 className="panelTitle">Latest Posts</h3>
+            {hasFilters ? (
+              <div className="filterRow">
+                <span>
+                  Showing {feedPosts.length} result{feedPosts.length === 1 ? "" : "s"}
+                  {activeTag ? ` in ${activeTag}` : ""}.
+                </span>
+                <Link href="/" className="filterClear">
+                  Clear
+                </Link>
+              </div>
+            ) : null}
             {featuredPosts.length === 0 ? (
               <p className="emptyState">No posts found in content/posts yet.</p>
             ) : (
@@ -115,13 +177,28 @@ export default function HomePage() {
             ) : (
               <ul className="categoryList">
                 {categories.map((category) => (
-                  <li key={category.name} className="categoryChip">
-                    <span>{category.name}</span>
-                    <span className="categoryCount">{category.count}</span>
+                  <li key={category.name}>
+                    <Link
+                      className={`categoryChip${activeTagLower === category.name.toLowerCase() ? " isActive" : ""}`}
+                      href={buildQuery({ q: searchQuery, tag: category.name })}
+                    >
+                      <span>{category.name}</span>
+                      <span className="categoryCount">{category.count}</span>
+                    </Link>
                   </li>
                 ))}
               </ul>
             )}
+            <div className="authorCard">
+              <div className="authorTop">
+                <img src={AUTHOR.avatar} alt={AUTHOR.name} className="authorAvatarLarge" />
+                <div>
+                  <p className="authorName">{AUTHOR.name}</p>
+                  <p className="authorRole">{AUTHOR.role}</p>
+                </div>
+              </div>
+              <p className="authorBio">{AUTHOR.bio}</p>
+            </div>
           </aside>
         </div>
       </section>

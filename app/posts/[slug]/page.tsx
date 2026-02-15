@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { AUTHOR, SITE_URL } from "@/lib/constants";
 import { formatDate } from "@/lib/date";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 
@@ -68,10 +68,14 @@ export default async function PostPage({ params }: PostPageProps) {
     image: `${SITE_URL}${post.coverImage}`,
     author: {
       "@type": "Person",
-      name: "Jacob Herrmann"
+      name: AUTHOR.name
     },
     keywords: post.tags.join(", ")
   };
+
+  const shareUrl = `${SITE_URL}/posts/${post.slug}`;
+  const shareText = encodeURIComponent(post.title);
+  const shareEncodedUrl = encodeURIComponent(shareUrl);
 
   return (
     <article className="stack">
@@ -80,8 +84,10 @@ export default async function PostPage({ params }: PostPageProps) {
       <header className="stackCompact">
         <h1 className="pageTitle">{post.title}</h1>
         <div className="byline">
-          <img src="/images/authors/jacob-herrmann.png" alt="Jacob Herrmann" className="authorAvatar" />
-          <span>By Jacob Herrmann · {formatDate(post.date)}</span>
+          <img src={AUTHOR.avatar} alt={AUTHOR.name} className="authorAvatar" />
+          <span>
+            By {AUTHOR.name} | {formatDate(post.date)}
+          </span>
         </div>
         <p className="metaLine">
           <span>{post.readingTimeMinutes} min read</span>
@@ -93,6 +99,33 @@ export default async function PostPage({ params }: PostPageProps) {
             </li>
           ))}
         </ul>
+        <div className="shareRow">
+          <span className="shareLabel">Share</span>
+          <a
+            className="shareButton"
+            href={`https://twitter.com/intent/tweet?text=${shareText}&url=${shareEncodedUrl}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            X
+          </a>
+          <a
+            className="shareButton"
+            href={`https://www.facebook.com/sharer/sharer.php?u=${shareEncodedUrl}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Facebook
+          </a>
+          <a
+            className="shareButton"
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareEncodedUrl}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            LinkedIn
+          </a>
+        </div>
       </header>
       <section className="postContent" dangerouslySetInnerHTML={{ __html: post.html }} />
     </article>
