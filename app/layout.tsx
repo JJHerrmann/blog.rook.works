@@ -31,10 +31,28 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: SITE_NAME,
+              alternateName: ["Rook Works Blog", "blog.rook.works"],
+              url: SITE_URL,
+              description: SITE_DESCRIPTION,
+              publisher: {
+                "@type": "Organization",
+                name: "Rook Works",
+                url: "https://rook.works/"
+              }
+            })
+          }}
+        />
         <header className="siteHeader">
           <div className="container">
             <Link href="/" className="siteBrand">
-              blog.rook.works
+              The Rook's Work Desk
             </Link>
           </div>
         </header>
