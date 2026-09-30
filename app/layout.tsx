@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -57,6 +58,13 @@ export default function RootLayout({
           </div>
         </header>
         <main className="container pageContent">{children}</main>
+        {/* Cloudflare Web Analytics */}
+        <Script
+          type="module"
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token":"09f1ce1c2fae46a796a951a6a8edd5ee"}'
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
